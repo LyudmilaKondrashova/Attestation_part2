@@ -4,7 +4,7 @@ public class Toy { // Игрушка
     private int id; // id игрушки
     private String name;    // Название игрушки
     private int count;  // Количество
-    private int drop;   // Частота выпадения - вес от 0% до 100%
+    private int drop;   // Частота выпадения игрушки - вес от 0% до 100%
 
     public Toy(int id, String name, int count, int drop) {
         this.id = id;

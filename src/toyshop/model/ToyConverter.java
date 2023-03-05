@@ -10,6 +10,7 @@ public class ToyConverter {
 
     public Toy convert(String line) {
         String[] lines = line.split(SEPARATOR);
-        return new Toy(Integer.valueOf(lines[0]), lines[1], Integer.valueOf(lines[2]), Integer.valueOf(lines[3]));
+        return new Toy(Integer.valueOf(lines[0]), lines[1], Integer.valueOf(lines[2]),
+                Integer.valueOf(lines[3]));
     }
 }

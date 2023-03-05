@@ -2,7 +2,6 @@ package toyshop.model;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 import static toyshop.model.Constants.FILETOYSNAME;
 import static toyshop.model.Constants.FILEPRESENTTOYSNAME;
@@ -37,7 +36,7 @@ public class ToyOperationImpl implements ToyOperation {
                 max = id;
             }
         }
-        int newId = max + 1;
+        int newId = max + 1;    // Определили id для новой игрушки
         toy.setId(newId);
         toys.add(toy);
         writeToys(FILETOYSNAME, toys);
@@ -60,6 +59,7 @@ public class ToyOperationImpl implements ToyOperation {
         return flag;
     }
 
+    // Розыгрыш одной игрушки
     @Override
     public Toy lotOneToy() {
         ArrayList<Toy> toys = getAllToys(FILETOYSNAME);
@@ -75,9 +75,13 @@ public class ToyOperationImpl implements ToyOperation {
             int sizeLot = lotToys.size();
             if (sizeLot > 0) {
                 if (sizeLot == 1) {
+                    ArrayList<Toy> newArrayToys = toysAfterDraw(toys, lotToys.get(0));
+                    writeToys(FILETOYSNAME, newArrayToys);
                     return lotToys.get(0);
                 } else {
                     int currentLot = new Random().nextInt(1, sizeLot);
+                    ArrayList<Toy> newArrayToys = toysAfterDraw(toys, lotToys.get(currentLot));
+                    writeToys(FILETOYSNAME, newArrayToys);
                     return lotToys.get(currentLot);
                 }
             }
@@ -85,17 +89,57 @@ public class ToyOperationImpl implements ToyOperation {
         return null;
     }
 
+    // Уменьшение количества игрушек после розыгрыша
     @Override
-    public void presentToy(int idNote) {
+    public ArrayList<Toy> toysAfterDraw(ArrayList<Toy> toys, Toy lotToy) {
+        ArrayList<Toy> newToys = new ArrayList<>();
+        for (Toy item : toys) {
+            if (item.getId() == lotToy.getId()) {
+                item.setCount(item.getCount() - 1);
+            }
+            if (item.getCount() > 0) {
+                newToys.add(item);
+            }
+        }
+        return newToys;
+    }
 
+    // Выдача призовой игрушки
+    @Override
+    public void giveToy(Toy toy) {
+        writePresentToy(FILEPRESENTTOYSNAME, toy);
     }
 
     // Запись всех игрушек в файл
-    private void writeToys(String fileName, ArrayList<Toy> toys) {
+    @Override
+    public void writeToys(String fileName, ArrayList<Toy> toys) {
         ArrayList<String> toysList = new ArrayList<>();
         for (Toy item : toys) {
             toysList.add(toyConverter.convert(item));
         }
         fileOperation.saveAllToys(fileName, toysList);
+    }
+
+    // Запись выданной игрушки в файл
+    @Override
+    public void writePresentToy(String fileName, Toy toy) {
+        fileOperation.savePresentToy(fileName, toy.getName());
+    }
+
+    // Очистка файла выданных игрушек после окончания работы программы
+    @Override
+    public void clearFile() {
+        fileOperation.clearPresentToysFile(FILEPRESENTTOYSNAME);
+    }
+
+    // Получение списка всех выданных игрушек
+    @Override
+    public ArrayList<String> getAllPresentToys(String fileName) {
+        ArrayList<String> toyList = fileOperation.readAllPresentToys(fileName);
+        ArrayList<String> toys = new ArrayList<>();
+        for (String line : toyList) {
+            toys.add(line);
+        }
+        return toys;
     }
 }
