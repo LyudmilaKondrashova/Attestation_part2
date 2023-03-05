@@ -11,5 +11,11 @@ public interface ToyOperation {
 
     Toy lotOneToy();    // Розыгрыш одной игрушки
 
-    void presentToy(int idNote); // Выдача призовой игрушки
+    ArrayList<Toy> toysAfterDraw(ArrayList<Toy> toys, Toy lotToy);    // Уменьшение количества игрушек после розыгрыша
+
+    void giveToy(Toy toy); // Выдача призовой игрушки
+
+    void writeToys(String fileName, ArrayList<Toy> toys);    // Запись всех игрушек в файл
+
+    void writePresentToy(String fileName, Toy toy);  // Запись выданной игрушки в файл
 }

@@ -9,9 +9,6 @@ public interface FileOperation {
     // Запись в файл списка всех игрушек
     void saveAllToys(String fileName, ArrayList<String> toys);
 
-//    // Получение из файла списка игрушек
-//    ArrayList<String> readAllPresentToys();
-//
-//    // Запись в файл призовых игрушек списка игрушек
-//    void saveAllPresentToys(ArrayList<String> toys);
+    // Запись в файл выданной игрушки
+    void savePresentToy(String fileName, String presentToy);
 }

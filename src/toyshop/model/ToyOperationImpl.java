@@ -75,9 +75,13 @@ public class ToyOperationImpl implements ToyOperation {
             int sizeLot = lotToys.size();
             if (sizeLot > 0) {
                 if (sizeLot == 1) {
+                    ArrayList<Toy> newArrayToys = toysAfterDraw(toys, lotToys.get(0));
+                    writeToys(FILETOYSNAME, newArrayToys);
                     return lotToys.get(0);
                 } else {
                     int currentLot = new Random().nextInt(1, sizeLot);
+                    ArrayList<Toy> newArrayToys = toysAfterDraw(toys, lotToys.get(currentLot));
+                    writeToys(FILETOYSNAME, newArrayToys);
                     return lotToys.get(currentLot);
                 }
             }
@@ -86,16 +90,37 @@ public class ToyOperationImpl implements ToyOperation {
     }
 
     @Override
-    public void presentToy(int idNote) {
+    public ArrayList<Toy> toysAfterDraw(ArrayList<Toy> toys, Toy lotToy) {
+        ArrayList<Toy> newToys = new ArrayList<>();
+        for (Toy item : toys) {
+            if (item.getId() == lotToy.getId()) {
+                item.setCount(item.getCount() - 1);
+            }
+            if (item.getCount() > 0) {
+                newToys.add(item);
+            }
+        }
+        return newToys;
+    }
 
+    @Override
+    public void giveToy(Toy toy) {
+        writePresentToy(FILEPRESENTTOYSNAME, toy);
     }
 
     // Запись всех игрушек в файл
-    private void writeToys(String fileName, ArrayList<Toy> toys) {
+    @Override
+    public void writeToys(String fileName, ArrayList<Toy> toys) {
         ArrayList<String> toysList = new ArrayList<>();
         for (Toy item : toys) {
             toysList.add(toyConverter.convert(item));
         }
         fileOperation.saveAllToys(fileName, toysList);
+    }
+
+    // Запись выданной игрушки в файл
+    @Override
+    public void writePresentToy(String fileName, Toy toy) {
+        fileOperation.savePresentToy(fileName, toyConverter.convert(toy));
     }
 }

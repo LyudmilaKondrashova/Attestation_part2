@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import static toyshop.model.Constants.FILETOYSNAME;
 import static toyshop.model.Constants.FILEPRESENTTOYSNAME;
 
-public class FileOperationImpl implements FileOperation{
+public class FileOperationImpl implements FileOperation {
     // Получение из файла списка всех игрушек
     @Override
     public ArrayList<String> readAllToys(String fileName) {
@@ -37,7 +37,7 @@ public class FileOperationImpl implements FileOperation{
 
     // Запись в файл списка всех игрушек
     @Override
-    public void saveAllToys(String fileName ,ArrayList<String> toys) {
+    public void saveAllToys(String fileName, ArrayList<String> toys) {
         try (FileWriter fileWriter = new FileWriter(fileName, false)) {
             for (String line : toys) {
                 fileWriter.write(line);
@@ -49,13 +49,14 @@ public class FileOperationImpl implements FileOperation{
         }
     }
 
-//    @Override
-//    public ArrayList<String> readAllPresentToys() {
-//        return null;
-//    }
-//
-//    @Override
-//    public void saveAllPresentToys(ArrayList<String> toys) {
-//
-//    }
+    @Override
+    public void savePresentToy(String fileName, String presentToy) {
+        try (FileWriter fileWriter = new FileWriter(fileName, true)) {
+            fileWriter.write(presentToy);
+            fileWriter.append('\n');
+            fileWriter.flush();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

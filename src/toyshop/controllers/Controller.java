@@ -29,4 +29,8 @@ public class Controller {
     public Toy lotToy() {
         return  toyOperation.lotOneToy();
     }
+
+    public void giveAwayToy(Toy toy) {
+        toyOperation.giveToy(toy);
+    }
 }
